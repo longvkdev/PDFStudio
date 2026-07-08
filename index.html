@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF Studio — Edit PDF Online Free</title>
+  <meta name="description" content="Edit PDF files online for free. Add text, highlight, draw, and annotate PDFs directly in your browser. No server upload required." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- App CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ===================== UPLOAD SCREEN ===================== -->
+  <div id="upload-screen">
+    <div class="upload-gradient-bg"></div>
+    <div class="upload-noise-overlay"></div>
+
+    <!-- Nav -->
+    <nav class="landing-nav">
+      <div class="nav-logo">
+        <div class="logo-icon"><i class="fa-solid fa-file-pdf"></i></div>
+        <span class="logo-text">PDF<strong>Studio</strong></span>
+      </div>
+      <div class="nav-badge">100% Client-side · No Upload</div>
+    </nav>
+
+    <!-- Hero -->
+    <main class="upload-hero">
+      <div class="hero-tag">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>Privacy-first — files never leave your device</span>
+      </div>
+      <h1 class="hero-title">Edit PDF <span class="gradient-text">Online</span></h1>
+      <p class="hero-subtitle">Add text, highlight, draw, annotate — all directly in your browser. Fast, free, and completely private.</p>
+
+      <!-- Drop Zone -->
+      <div id="drop-zone" class="drop-zone">
+        <div class="drop-zone-glow"></div>
+        <div class="drop-zone-inner">
+          <div class="drop-icon-wrap">
+            <i class="fa-solid fa-file-pdf drop-icon-main"></i>
+            <i class="fa-solid fa-plus drop-icon-plus"></i>
+          </div>
+          <h2 class="drop-title">Drop your PDF here</h2>
+          <p class="drop-sub">or</p>
+          <button id="btn-upload" class="btn-choose-file">
+            <i class="fa-solid fa-folder-open"></i>
+            Choose File
+          </button>
+          <p class="drop-hint">PDF files only · No size limit</p>
+        </div>
+      </div>
+
+      <!-- Feature pills -->
+      <div class="feature-pills">
+        <div class="feature-pill"><i class="fa-solid fa-t"></i> Add Text</div>
+        <div class="feature-pill"><i class="fa-solid fa-highlighter"></i> Highlight</div>
+        <div class="feature-pill"><i class="fa-solid fa-pen-nib"></i> Draw</div>
+        <div class="feature-pill"><i class="fa-regular fa-square"></i> Shapes</div>
+        <div class="feature-pill"><i class="fa-solid fa-eraser"></i> Erase</div>
+        <div class="feature-pill"><i class="fa-solid fa-download"></i> Export PDF</div>
+      </div>
+    </main>
+
+    <input type="file" id="file-input" accept=".pdf" style="display:none" />
+  </div>
+
+  <!-- ===================== EDITOR SCREEN ===================== -->
+  <div id="editor-screen" class="hidden">
+
+    <!-- HEADER -->
+    <header id="app-header">
+      <!-- Left: Logo + file name -->
+      <div class="header-left">
+        <button id="btn-back" class="icon-btn" title="Back to upload">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <div class="logo-small">
+          <i class="fa-solid fa-file-pdf"></i>
+          <span>PDF<strong>Studio</strong></span>
+        </div>
+        <div class="file-badge" id="file-badge">
+          <i class="fa-solid fa-file-pdf"></i>
+          <span id="file-name-display">document.pdf</span>
+        </div>
+      </div>
+
+      <!-- Center: Main toolbar -->
+      <div id="main-toolbar" class="main-toolbar">
+
+        <div class="tool-group">
+          <button class="tool-btn active" data-tool="select" title="Select (V)">
+            <i class="fa-solid fa-arrow-pointer"></i>
+            <span>Select</span>
+          </button>
+        </div>
+
+        <div class="toolbar-sep"></div>
+
+        <div class="tool-group">
+          <button class="tool-btn" data-tool="text" title="Add Text (T)">
+            <i class="fa-solid fa-font"></i>
+            <span>Text</span>
+          </button>
+          <button class="tool-btn" data-tool="highlight" title="Highlight (H)">
+            <i class="fa-solid fa-highlighter"></i>
+            <span>Highlight</span>
+          </button>
+          <button class="tool-btn" data-tool="draw" title="Draw (D)">
+            <i class="fa-solid fa-pen-nib"></i>
+            <span>Draw</span>
+          </button>
+        </div>
+
+        <div class="toolbar-sep"></div>
+
+        <div class="tool-group">
+          <button class="tool-btn" data-tool="rect" title="Rectangle (R)">
+            <i class="fa-regular fa-square"></i>
+            <span>Rect</span>
+          </button>
+          <button class="tool-btn" data-tool="arrow" title="Arrow (A)">
+            <i class="fa-solid fa-arrow-right-long"></i>
+            <span>Arrow</span>
+          </button>
+        </div>
+
+        <div class="toolbar-sep"></div>
+
+        <div class="tool-group">
+          <button class="tool-btn" data-tool="eraser" title="Eraser (E)">
+            <i class="fa-solid fa-eraser"></i>
+            <span>Eraser</span>
+          </button>
+        </div>
+
+        <div class="toolbar-sep"></div>
+
+        <div class="tool-group">
+          <button id="btn-undo" class="icon-btn" title="Undo (Ctrl+Z)">
+            <i class="fa-solid fa-rotate-left"></i>
+          </button>
+          <button id="btn-redo" class="icon-btn" title="Redo (Ctrl+Y)">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: Tool options + Download -->
+      <div class="header-right">
+        <div id="tool-options" class="tool-options"></div>
+
+        <button id="btn-download" class="btn-download">
+          <i class="fa-solid fa-download"></i>
+          <span>Download PDF</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN AREA -->
+    <div id="main-area">
+
+      <!-- SIDEBAR: page thumbnails -->
+      <aside id="sidebar">
+        <div class="sidebar-hdr">
+          <span>Pages</span>
+          <span id="total-pages-badge" class="badge">0</span>
+        </div>
+        <div id="pages-list"></div>
+      </aside>
+
+      <!-- CANVAS AREA -->
+      <div id="canvas-area">
+        <!-- Top bar: zoom -->
+        <div class="canvas-topbar">
+          <button id="btn-zoom-out" class="icon-btn sm" title="Zoom Out (-)">
+            <i class="fa-solid fa-minus"></i>
+          </button>
+          <button id="btn-zoom-fit" class="zoom-level-btn" id="zoom-display" title="Reset zoom">
+            <span id="zoom-level-text">100%</span>
+          </button>
+          <button id="btn-zoom-in" class="icon-btn sm" title="Zoom In (+)">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </div>
+
+        <!-- Scrollable canvas viewport -->
+        <div id="canvas-scroll">
+          <div id="canvas-outer">
+            <div id="canvas-container">
+              <canvas id="pdf-canvas"></canvas>
+              <canvas id="fabric-canvas"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom bar: page navigation -->
+        <div class="canvas-bottombar">
+          <button id="btn-prev" class="icon-btn sm" title="Previous page">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <div class="page-nav-wrap">
+            <input type="number" id="page-input" value="1" min="1" title="Current page" />
+            <span class="page-sep">of</span>
+            <span id="page-count">1</span>
+          </div>
+          <button id="btn-next" class="icon-btn sm" title="Next page">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===================== LOADING OVERLAY ===================== -->
+  <div id="loading-overlay" class="hidden">
+    <div class="loading-box">
+      <div class="spinner"></div>
+      <p id="loading-text">Loading PDF...</p>
+    </div>
+  </div>
+
+  <!-- ===================== TOAST ===================== -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- ===================== SCRIPTS ===================== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
