@@ -1,5 +1,5 @@
 /* ============================================================
- * PDF STUDIO — Complete Application Logic
+ * PDF CANVAS — Complete Application Logic
  * Stack: PDF.js (render) + Fabric.js (edit) + pdf-lib (export)
  * ============================================================ */
 
@@ -252,16 +252,27 @@ function setupMouseEvents(fc) {
 
   fc.on('mouse:down', opt => {
     const ptr = fc.getPointer(opt.e);
-    const tool = S.tool;
+    let tool = S.tool;
 
+    // 1. If editing text and clicking outside, switch to select
     if (tool === 'text') {
       const active = fc.getActiveObject();
-      if (active && active.isEditing) {
+      if (active && active.isEditing && !opt.target) {
         setTool('select');
         return;
       }
-      if (opt.target) return;
+    }
 
+    // 2. If clicking an existing object (except eraser), auto-switch to select
+    if (opt.target && tool !== 'eraser') {
+      if (tool !== 'select') {
+        setTool('select');
+        tool = 'select'; // update local var just in case
+      }
+      return;
+    }
+
+    if (tool === 'text') {
       addText(ptr.x, ptr.y);
       return;
     }

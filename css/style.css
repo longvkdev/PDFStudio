@@ -1,5 +1,5 @@
 /* ============================================================
-   PDF STUDIO — Premium Dark Theme
+   PDF CANVAS — Premium Dark Theme
    ============================================================ */
 
 /* ── Reset & Base ────────────────────────────────────────── */
@@ -427,6 +427,25 @@ input  { font-family: var(--font); }
 }
 .btn-download:active { transform: translateY(0); }
 .btn-download.loading { opacity: 0.6; pointer-events: none; }
+
+/* Donation button */
+.btn-donate {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  font-size: 13.5px; font-weight: 600;
+  padding: 8px 18px; border-radius: var(--radius-md);
+  text-decoration: none;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition);
+  white-space: nowrap; flex-shrink: 0;
+}
+.btn-donate:hover {
+  background: rgba(245, 158, 11, 0.25);
+  border-color: rgba(245, 158, 11, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.2);
+}
 
 /* ── Main Area ───────────────────────────────────────────── */
 #main-area {
