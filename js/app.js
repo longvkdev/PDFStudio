@@ -254,21 +254,32 @@ function setupMouseEvents(fc) {
     const ptr = fc.getPointer(opt.e);
     let tool = S.tool;
 
+    let target = opt.target;
+    // In some cases (like clicking padding or hidden textareas), opt.target might be null. 
+    // We strictly find any object under the pointer to prevent drawing over existing components.
+    if (!target) {
+      target = fc.findTarget(opt.e);
+    }
+
     // 1. If editing text and clicking outside, switch to select
     if (tool === 'text') {
       const active = fc.getActiveObject();
-      if (active && active.isEditing && !opt.target) {
+      if (active && active.isEditing && !target) {
         setTool('select');
         return;
       }
     }
 
     // 2. If clicking an existing object (except eraser), auto-switch to select
-    if (opt.target && tool !== 'eraser') {
+    if (target && tool !== 'eraser') {
       if (tool !== 'select') {
         setTool('select');
         tool = 'select'; // update local var just in case
       }
+      // Force selection so FabricJS drag works, and stop any drawing state
+      fc.setActiveObject(target);
+      _drawing = false;
+      _activeObj = null;
       return;
     }
 
