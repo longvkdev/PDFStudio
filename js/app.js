@@ -324,18 +324,29 @@ function setupMouseEvents(fc) {
       _drawing = true;
       _startX  = ptr.x;
       _startY  = ptr.y;
+      _activeObj = new fabric.Line([_startX, _startY, _startX, _startY], {
+        stroke:      S.opts.color,
+        strokeWidth: S.opts.lineWidth,
+        selectable:  false,
+        evented:     false,
+      });
+      fc.add(_activeObj);
     }
   });
 
   fc.on('mouse:move', opt => {
     if (!_drawing || !_activeObj) return;
     const ptr = fc.getPointer(opt.e);
-    const x = Math.min(ptr.x, _startX);
-    const y = Math.min(ptr.y, _startY);
-    const w = Math.abs(ptr.x - _startX);
-    const h = Math.abs(ptr.y - _startY);
-
-    _activeObj.set({ left: x, top: y, width: w || 1, height: h || 1 });
+    
+    if (S.tool === 'arrow') {
+      _activeObj.set({ x2: ptr.x, y2: ptr.y });
+    } else {
+      const x = Math.min(ptr.x, _startX);
+      const y = Math.min(ptr.y, _startY);
+      const w = Math.abs(ptr.x - _startX);
+      const h = Math.abs(ptr.y - _startY);
+      _activeObj.set({ left: x, top: y, width: w || 1, height: h || 1 });
+    }
     fc.renderAll();
   });
 
@@ -343,7 +354,18 @@ function setupMouseEvents(fc) {
     if (!_drawing) return;
     _drawing = false;
 
-    if (_activeObj) {
+    if (S.tool === 'arrow') {
+      if (_activeObj) {
+        fc.remove(_activeObj);
+        _activeObj = null;
+      }
+      const ptr = fc.getPointer(opt.e);
+      const dx = ptr.x - _startX;
+      const dy = ptr.y - _startY;
+      if (Math.sqrt(dx * dx + dy * dy) > 8) {
+        addArrow(_startX, _startY, ptr.x, ptr.y);
+      }
+    } else if (_activeObj) {
       if (_activeObj.width < 4 && _activeObj.height < 4) {
         fc.remove(_activeObj);
       } else {
@@ -352,15 +374,6 @@ function setupMouseEvents(fc) {
       }
       _activeObj = null;
       fc.renderAll();
-    }
-
-    if (S.tool === 'arrow') {
-      const ptr = fc.getPointer(opt.e);
-      const dx = ptr.x - _startX;
-      const dy = ptr.y - _startY;
-      if (Math.sqrt(dx * dx + dy * dy) > 8) {
-        addArrow(_startX, _startY, ptr.x, ptr.y);
-      }
     }
   });
 }
