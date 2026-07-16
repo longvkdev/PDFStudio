@@ -856,6 +856,16 @@ async function exportPDF() {
     const { PDFDocument } = PDFLib;
     const srcBytes  = new Uint8Array(S.pdfBytes);
     const pdfDoc    = await PDFDocument.load(srcBytes);
+    
+    // Flatten form fields so they become part of the page content.
+    // This prevents interactive fields (which have backgrounds) from rendering ON TOP of our drawn annotations.
+    try {
+      const form = pdfDoc.getForm();
+      if (form) form.flatten();
+    } catch (e) {
+      console.warn('Could not flatten form:', e);
+    }
+
     const srcPages  = pdfDoc.getPages();
 
     // Build a new PDF with deleted pages removed and annotations added
